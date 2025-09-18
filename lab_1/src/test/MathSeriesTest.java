@@ -1,4 +1,5 @@
 package test;
+
 import main.MathSeries;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,34 +9,16 @@ import java.math.MathContext;
 public class MathSeriesTest {
 
     @Test
-    public void testArcsinApproxBasic() {
-        double result = MathSeries.arcsinApprox(0.5, 1e-6);
-        double expected = Math.asin(0.5);
+    public void testCalculateSeriesBasic() {
+        double result = MathSeries.calculateSeries(0.1, 1e-6);
+        double expected = 1 / Math.pow(1.1, 3);
         assertEquals(expected, result, 1e-6);
     }
 
     @Test
-    public void testArcsinBigBasic() {
-        MathContext mc = new MathContext(15);
-        BigDecimal result = MathSeries.arcsinBig(
-                new BigDecimal("0.5"),
-                new BigDecimal("1e-6"),
-                mc
-        );
-
-        double expected = Math.asin(0.5);
-        assertEquals(expected, result.doubleValue(), 1e-6);
-    }
-
-    @Test
-    public void testInvalidInputBothMethods() {
+    public void testInvalidInput() {
         assertThrows(IllegalArgumentException.class, () -> {
-            MathSeries.arcsinApprox(1.5, 1e-6);
-        });
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            MathContext mc = new MathContext(15);
-            MathSeries.arcsinBig(new BigDecimal("2.0"), new BigDecimal("1e-6"), mc);
+            MathSeries.calculateSeries(1.5, 1e-6);
         });
     }
 }

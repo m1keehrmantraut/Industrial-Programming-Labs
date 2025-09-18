@@ -13,52 +13,45 @@ public class TaylorSeriesSimple {
     }
 
     public double calculate() {
-        if (Math.abs(x) > 1) {
-            throw new IllegalArgumentException("x должен быть в интервале (-1, 1)");
+        if (Math.abs(x) >= 1) {
+            throw new IllegalArgumentException("|x| должен быть < 1");
         }
 
-        double sum = 0;
-        double term = x;
+        double sum = 1.0;
+        double term = 1.0;
         int n = 1;
 
         while (Math.abs(term) >= epsilon) {
+            term = Math.pow(-1, n) * (n + 1) * (n + 2) / 2.0 * Math.pow(x, n);
             sum += term;
-            n += 2;
-            term = term * x * x * (n - 2) * (n - 2) / ((n - 1) * n);
+            n++;
         }
-
         return sum;
     }
 
     public double getExactValue() {
-        return Math.asin(x);
+        return 1 / Math.pow(1 + x, 3);
     }
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Введите x (-1 < x < 1): ");
+        System.out.print("Введите x (|x| < 1): ");
         double x = scanner.nextDouble();
 
-        System.out.print("Введите k (натуральное число): ");
+        System.out.print("Введите точность k: ");
         int k = scanner.nextInt();
 
         if (Math.abs(x) >= 1) {
-            System.out.println("Ошибка: x должен быть в интервале (-1, 1)");
+            System.out.println("Ошибка: |x| должен быть < 1");
             return;
         }
 
-        if (k <= 0) {
-            System.out.println("Ошибка: k должно быть натуральным числом");
-            return;
-        }
-
-        TaylorSeriesSimple series = new TaylorSeriesSimple(x, k);
-        double approximate = series.calculate();
-        double exact = series.getExactValue();
+        TaylorSeriesSimple calculator = new TaylorSeriesSimple(x, k);
+        double approximate = calculator.calculate();
+        double exact = calculator.getExactValue();
 
         Formatter formatter = new Formatter();
-
         formatter.format("Приближенное значение: %+0" + (k + 8) + "." + (k + 1) + "f\n", approximate);
         formatter.format("Точное значение:      %+0" + (k + 8) + "." + (k + 1) + "f\n", exact);
         formatter.format("Погрешность:          %+0" + (k + 8) + "." + (k + 1) + "f\n", Math.abs(approximate - exact));
