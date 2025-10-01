@@ -32,7 +32,7 @@ public class TaylorSeriesBig {
 
         while (iteration < 1000) {
             BigDecimal sign = (n % 2 == 1) ? new BigDecimal("-1") : BigDecimal.ONE;
-            BigDecimal coefficient = new BigDecimal((n + 1) * (n + 2)).divide(new BigDecimal("2"), context);
+            BigDecimal coefficient = new BigDecimal(n + 1).multiply(new BigDecimal(n + 2)).divide(new BigDecimal("2"), context);
             BigDecimal xPower = x.pow(n, context);
 
             BigDecimal term = sign.multiply(coefficient, context).multiply(xPower, context);

@@ -57,8 +57,8 @@ public class TaylorSeriesSimple {
         formatter.format("Погрешность:          %+0" + (k + 8) + "." + (k + 1) + "f\n", Math.abs(approximate - exact));
 
         int intPart = (int) Math.abs(approximate);
-        formatter.format("Целая часть (8): %#o\n", intPart);
-        formatter.format("Целая часть (16): %#X\n", intPart);
+        formatter.format("Целая часть (8): %o\n", intPart);
+        formatter.format("Целая часть (16): %X\n", intPart);
 
         System.out.println(formatter.toString());
         scanner.close();
