@@ -2,7 +2,7 @@ package main;
 
 import menu.Menu;
 
-public class MainApp {
+public class Main {
     public static void main(String[] args) {
         Menu menu = new Menu();
         menu.start();

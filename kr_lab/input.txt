@@ -1,0 +1,2 @@
+hello world print i world love java world 123 78
+world

@@ -139,7 +139,6 @@ public class StringProcessor {
         } catch (NumberFormatException e) {
             return false;
         }
-
     }
 
     private List<String> extractTime() {
