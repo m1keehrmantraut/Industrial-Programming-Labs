@@ -1,0 +1,29 @@
+<ships>
+    <ship>
+        <id>1</id>
+        <name>Titanic</name>
+        <type>Cruise</type>
+        <tonnage>50000.0</tonnage>
+        <speed>30.0</speed>
+        <productionDate>01.01.1912</productionDate>
+        <price>2000000.0</price>
+    </ship>
+    <ship>
+        <id>2</id>
+        <name>Bismarck</name>
+        <type>Warship</type>
+        <tonnage>42000.0</tonnage>
+        <speed>30.0</speed>
+        <productionDate>01.02.1940</productionDate>
+        <price>3500000.0</price>
+    </ship>
+    <ship>
+        <id>3</id>
+        <name>Queen Mary</name>
+        <type>Cruise</type>
+        <tonnage>81000.0</tonnage>
+        <speed>28.0</speed>
+        <productionDate>01.03.1936</productionDate>
+        <price>5000000.0</price>
+    </ship>
+</ships>

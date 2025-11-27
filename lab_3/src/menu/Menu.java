@@ -2,9 +2,11 @@ package menu;
 
 import main.DataInitializer;
 import model.Ship;
+import io.AbstractIO;
 import io.TxtFileIO;
 import io.JsonFileIO;
 import io.XmlFileIO;
+import io.LoggingShipIO;
 import utils.CryptoUtils;
 import utils.ArchiveUtils;
 
@@ -17,9 +19,9 @@ public class Menu {
     private final Scanner scanner = new Scanner(System.in);
     private final SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 
-    private final TxtFileIO txtIO = new TxtFileIO();
-    private final JsonFileIO jsonIO = new JsonFileIO();
-    private final XmlFileIO xmlIO = new XmlFileIO();
+    private final AbstractIO<Ship> txtIO = new LoggingShipIO(new TxtFileIO());
+    private final AbstractIO<Ship> jsonIO = new LoggingShipIO(new JsonFileIO());
+    private final AbstractIO<Ship> xmlIO = new LoggingShipIO(new XmlFileIO());
 
     public void start() {
         data.loadData("ships.txt");
@@ -65,21 +67,30 @@ public class Menu {
 
     private void addShip() {
         try {
+            Ship.Builder builder = new Ship.Builder();
+
             System.out.print("ID: ");
-            int id = Integer.parseInt(scanner.nextLine());
+            builder.id(Integer.parseInt(scanner.nextLine()));
+
             System.out.print("Название: ");
-            String name = scanner.nextLine();
+            builder.name(scanner.nextLine());
+
             System.out.print("Тип: ");
-            String type = scanner.nextLine();
+            builder.type(scanner.nextLine());
+
             System.out.print("Водоизмещение (тонны): ");
-            double tonnage = Double.parseDouble(scanner.nextLine());
+            builder.tonnage(Double.parseDouble(scanner.nextLine()));
+
             System.out.print("Скорость (узлы): ");
-            double speed = Double.parseDouble(scanner.nextLine());
+            builder.speed(Double.parseDouble(scanner.nextLine()));
+
             System.out.print("Дата производства (dd.MM.yyyy): ");
-            Date date = df.parse(scanner.nextLine());
+            builder.productionDate(df.parse(scanner.nextLine()));
+
             System.out.print("Цена: ");
-            double price = Double.parseDouble(scanner.nextLine());
-            Ship s = new Ship(id, name, type, tonnage, speed, date, price);
+            builder.price(Double.parseDouble(scanner.nextLine()));
+
+            Ship s = builder.build();
             data.getListStorage().add(s);
             data.getMapStorage().add(s);
             System.out.println("Корабль добавлен.");
@@ -97,19 +108,28 @@ public class Menu {
                 System.out.println("Корабль не найден.");
                 return;
             }
+
+            Ship.Builder builder = new Ship.Builder().id(id);
+
             System.out.print("Новое название: ");
-            String name = scanner.nextLine();
+            builder.name(scanner.nextLine());
+
             System.out.print("Новый тип: ");
-            String type = scanner.nextLine();
+            builder.type(scanner.nextLine());
+
             System.out.print("Новое водоизмещение: ");
-            double tonnage = Double.parseDouble(scanner.nextLine());
+            builder.tonnage(Double.parseDouble(scanner.nextLine()));
+
             System.out.print("Новая скорость: ");
-            double speed = Double.parseDouble(scanner.nextLine());
+            builder.speed(Double.parseDouble(scanner.nextLine()));
+
             System.out.print("Новая дата производства (dd.MM.yyyy): ");
-            Date date = df.parse(scanner.nextLine());
+            builder.productionDate(df.parse(scanner.nextLine()));
+
             System.out.print("Новая цена: ");
-            double price = Double.parseDouble(scanner.nextLine());
-            Ship updated = new Ship(id, name, type, tonnage, speed, date, price);
+            builder.price(Double.parseDouble(scanner.nextLine()));
+
+            Ship updated = builder.build();
             data.getListStorage().update(id, updated);
             data.getMapStorage().update(id, updated);
             System.out.println("Корабль обновлён.");
@@ -155,10 +175,15 @@ public class Menu {
             }
         }
         for (Ship s : list) {
-            data.getListStorage().add(s);
-            data.getMapStorage().add(s);
+            if (data.getListStorage().findById(s.getId()) == null) {
+                data.getListStorage().add(s);
+                data.getMapStorage().add(s);
+            } else {
+                System.out.println("Корабль с ID " + s.getId() + " уже есть, пропускаем.");
+            }
         }
     }
+
 
     private void sortMenu() {
         System.out.print("Выберите поле для сортировки (id/name/type/tonnage/speed/price): ");
@@ -181,7 +206,10 @@ public class Menu {
             System.out.print("Введите ID корабля для шифрования имени: ");
             int id = Integer.parseInt(scanner.nextLine());
             Ship s = data.getListStorage().findById(id);
-            if (s == null) { System.out.println("Корабль не найден"); return; }
+            if (s == null) {
+                System.out.println("Корабль не найден");
+                return;
+            }
             SecretKey key = CryptoUtils.generateKey();
             String encrypted = CryptoUtils.encrypt(s.getName(), key);
             System.out.println("Зашифрованное имя: " + encrypted);

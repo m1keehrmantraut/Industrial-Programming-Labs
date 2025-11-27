@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "name": "Titanic",
+    "type": "Cruise",
+    "tonnage": 50000.0,
+    "speed": 30.0,
+    "productionDate": "01.01.1912",
+    "price": 2000000.0
+  },
+  {
+    "id": 2,
+    "name": "Bismarck",
+    "type": "Warship",
+    "tonnage": 42000.0,
+    "speed": 30.0,
+    "productionDate": "01.02.1940",
+    "price": 3500000.0
+  },
+  {
+    "id": 3,
+    "name": "Queen Mary",
+    "type": "Cruise",
+    "tonnage": 81000.0,
+    "speed": 28.0,
+    "productionDate": "01.03.1936",
+    "price": 5000000.0
+  }
+]

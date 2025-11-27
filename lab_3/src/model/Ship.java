@@ -8,7 +8,9 @@ public class Ship extends AbstractEntity {
     private double speed;
     private double price;
 
-    public Ship(int id, String name, String type, double tonnage, double speed, Date productionDate, double price) {
+    public Ship(int id, String name, String type,
+                double tonnage, double speed,
+                Date productionDate, double price) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -29,6 +31,7 @@ public class Ship extends AbstractEntity {
     public double getPrice() { return price; }
     public void setPrice(double price) { this.price = price; }
 
+    @Override
     public String toString() {
         return "ID=" + id +
                 ", Name='" + name + '\'' +
@@ -37,5 +40,54 @@ public class Ship extends AbstractEntity {
                 ", Speed=" + speed +
                 ", ProductionDate=" + productionDate +
                 ", Price=" + price;
+    }
+
+    public static class Builder {
+        private int id;
+        private String name;
+        private String type;
+        private double tonnage;
+        private double speed;
+        private Date productionDate;
+        private double price;
+
+        public Builder id(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder type(String type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder tonnage(double tonnage) {
+            this.tonnage = tonnage;
+            return this;
+        }
+
+        public Builder speed(double speed) {
+            this.speed = speed;
+            return this;
+        }
+
+        public Builder productionDate(Date productionDate) {
+            this.productionDate = productionDate;
+            return this;
+        }
+
+        public Builder price(double price) {
+            this.price = price;
+            return this;
+        }
+
+        public Ship build() {
+            return new Ship(id, name, type, tonnage, speed, productionDate, price);
+        }
     }
 }
